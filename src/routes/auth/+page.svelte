@@ -1,35 +1,43 @@
 <script lang="ts">
-  // import { page } from "$app/stores";
-  import AuthForm from "@/components/auth-form.svelte";
+  import { page } from "$app/stores";
+  import LoginForm from "@/components/login-form.svelte";
+  import RegisterForm from "@/components/register-form.svelte";
   import Button from "@/components/ui/button/button.svelte";
-
-  let { data } = $props();
 
   let type: "login" | "register" = $state("login");
 
-  // $effect(() => {
-  //   type =
-  //     $page.url.searchParams.get("type") === "register" ? "register" : "login";
-  // });
+  $effect(() => {
+    type =
+      $page.url.searchParams.get("type") === "register" ? "register" : "login";
+  });
 
-  // $effect(() => {
-  //   const url = new URL(window.location.href);
-  //   url.searchParams.set("type", type);
-  //   history.replaceState(null, "", url);
-  // });
+  $effect(() => {
+    const url = new URL(window.location.href);
+    url.searchParams.set("type", type);
+    history.replaceState(null, "", url);
+  });
 </script>
 
 <main>
-  <section class="flex flex-col items-center justify-center h-screen">
+  <section class="">
     <header>
       <h1 class="text-4xl font-bold">
         {type === "login" ? "Login" : "Register"}
       </h1>
     </header>
-    <AuthForm data={data.form} />
+    {#if type === "login"}
+      <LoginForm />
+    {:else}
+      <RegisterForm />
+    {/if}
     <footer>
-      <Button onclick={() => (type = type === "login" ? "register" : "login")}>
-        {type === "login" ? "Register instead" : "Login instead"}
+      <Button
+        variant="link"
+        href={type === "login" ? "/auth?type=register" : "/auth?type=login"}
+      >
+        {type === "login"
+          ? "Don't have an account? Register instead"
+          : "Have account already? Login instead"}
       </Button>
     </footer>
   </section>
