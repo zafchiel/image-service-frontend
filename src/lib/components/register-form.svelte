@@ -12,36 +12,37 @@
     repeatPassword: "",
   });
 
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  let errors = $state<any[]>([]);
+  let errors = $state<Record<string, string> | null>(null);
   let submitted = $state(false);
+
+  function validateForm() {
+    const result = v.safeParse(RegisterSchema, formData);
+
+    if (result.success) {
+      errors = null;
+    } else {
+      errors = result.issues.reduce(
+        (acc, issue) => {
+          if (issue?.path) {
+            acc[issue.path[0].key as string] = issue.message;
+          }
+          return acc;
+        },
+        {} as Record<string, string>,
+      );
+    }
+  }
 
   function handleSubmit(event: Event) {
     event.preventDefault();
     submitted = true;
 
-    const result = v.safeParse(RegisterSchema, formData);
-
-    if (result.success) {
-      console.log("Form submitted:", result.output);
-      errors = [];
-    } else {
-      console.error(result.issues);
-      errors = result.issues;
-    }
+    validateForm();
   }
 
   $effect(() => {
     if (submitted) {
-      const result = v.safeParse(RegisterSchema, formData);
-
-      if (result.success) {
-        errors = [];
-        console.log("Form submitted:", result.output);
-      } else {
-        console.error(result.issues);
-        errors = result.issues;
-      }
+      validateForm();
     }
   });
 </script>
@@ -55,11 +56,9 @@
     required
     bind:value={formData.email}
   />
-  {#each errors as error}
-    {#if error.path[0].key === "email"}
-      <p class="text-red-500">{error.message}</p>
-    {/if}
-  {/each}
+  {#if errors?.email}
+    <p class="text-red-500">{errors.email}</p>
+  {/if}
 
   <Label for="username">Username</Label>
   <Input
@@ -69,11 +68,9 @@
     required
     bind:value={formData.username}
   />
-  {#each errors as error}
-    {#if error.path[0].key === "username"}
-      <p class="text-red-500">{error.message}</p>
-    {/if}
-  {/each}
+  {#if errors?.username}
+    <p class="text-red-500">{errors.username}</p>
+  {/if}
 
   <Label for="password">Password</Label>
   <Input
@@ -83,11 +80,9 @@
     required
     bind:value={formData.password}
   />
-  {#each errors as error}
-    {#if error.path[0].key === "password"}
-      <p class="text-red-500">{error.message}</p>
-    {/if}
-  {/each}
+  {#if errors?.password}
+    <p class="text-red-500">{errors.password}</p>
+  {/if}
 
   <Label for="repeatPassword">Confirm Password</Label>
   <Input
@@ -97,11 +92,9 @@
     required
     bind:value={formData.repeatPassword}
   />
-  {#each errors as error}
-    {#if error.path[0].key === "repeatPassword"}
-      <p class="text-red-500">{error.message}</p>
-    {/if}
-  {/each}
+  {#if errors?.repeatPassword}
+    <p class="text-red-500">{errors.repeatPassword}</p>
+  {/if}
 
   <Button type="submit">Register</Button>
 </form>
