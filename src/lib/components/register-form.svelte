@@ -47,6 +47,10 @@
   });
 </script>
 
+{#snippet errorMessage(msg: string)}
+  <p class="text-red-500 text-xs">{msg}</p> 
+{/snippet}
+
 <form method="POST" onsubmit={handleSubmit} class="space-y-2">
   <Label for="email">Email</Label>
   <Input
@@ -54,10 +58,11 @@
     id="email"
     name="email"
     required
+    aria-invalid="true"
     bind:value={formData.email}
   />
   {#if errors?.email}
-    <p class="text-red-500">{errors.email}</p>
+    {@render errorMessage(errors.email)}
   {/if}
 
   <Label for="username">Username</Label>
@@ -69,7 +74,7 @@
     bind:value={formData.username}
   />
   {#if errors?.username}
-    <p class="text-red-500">{errors.username}</p>
+    {@render errorMessage(errors.username)}
   {/if}
 
   <Label for="password">Password</Label>
@@ -81,7 +86,7 @@
     bind:value={formData.password}
   />
   {#if errors?.password}
-    <p class="text-red-500">{errors.password}</p>
+    {@render errorMessage(errors.password)}
   {/if}
 
   <Label for="repeatPassword">Confirm Password</Label>
@@ -93,7 +98,7 @@
     bind:value={formData.repeatPassword}
   />
   {#if errors?.repeatPassword}
-    <p class="text-red-500">{errors.repeatPassword}</p>
+    {@render errorMessage(errors.repeatPassword)}
   {/if}
 
   <Button type="submit">Register</Button>
