@@ -33,11 +33,34 @@
     }
   }
 
-  function handleSubmit(event: Event) {
+  async function handleSubmit(event: Event) {
     event.preventDefault();
     submitted = true;
 
-    validateForm();
+    const result = v.safeParse(RegisterSchema, formData);
+
+    if (!result.success) {
+      console.error(result.issues);
+      return;
+    }
+
+    const { email, username, password } = result.output;
+
+    try {
+      const res = await fetch("http://localhost:8080/register", {
+        method: "POST",
+        body: JSON.stringify({ email, username, password }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to register, error: " + res.statusText);
+      }
+
+      const data = await res.json();
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   $effect(() => {
