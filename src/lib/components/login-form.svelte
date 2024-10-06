@@ -32,11 +32,34 @@
     }
   }
 
-  function handleSubmit(event: Event) {
+  async function handleSubmit(event: Event) {
     event.preventDefault();
     submitted = true;
 
-    validateForm();
+    const result = v.safeParse(LoginSchema, formData);
+
+    if (!result.success) {
+      console.error(result.issues);
+      return;
+    }
+
+    const { email, password } = result.output;
+
+    try {
+      const res = await fetch("http://localhost:8080/login", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to login, error: " + res.statusText);
+      }
+
+      const data = await res.json();
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   $effect(() => {
