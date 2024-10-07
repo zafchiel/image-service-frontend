@@ -56,6 +56,7 @@
       });
 
       if (!res.ok) {
+        console.log(res)
         throw new Error("Failed to register, error: " + res.statusText);
       }
 

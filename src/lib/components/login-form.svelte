@@ -55,6 +55,7 @@
       });
 
       if (!res.ok) {
+        console.log(res)
         throw new Error("Failed to login, error: " + res.statusText);
       }
 
