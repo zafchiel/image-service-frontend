@@ -1,2 +1,3 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<main class="max-w-[1200px] mx-auto py-4">
+  <h1 class="text-4xl font-bold">Welcome to Image-Service</h1>
+</main>

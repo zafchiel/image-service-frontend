@@ -18,8 +18,8 @@
   });
 </script>
 
-<main>
-  <section class="">
+<main class="max-w-[1200px] mx-auto py-4">
+  <section class="max-w-[400px]">
     <header>
       <h1 class="text-4xl font-bold">
         {type === "login" ? "Login" : "Register"}
@@ -31,14 +31,14 @@
       <RegisterForm />
     {/if}
     <footer>
-      <Button
-        variant="link"
+      <a
+        class="text-sm text-primary underline-offset-4 hover:underline"
         href={type === "login" ? "/auth?type=register" : "/auth?type=login"}
       >
         {type === "login"
           ? "Don't have an account? Register instead"
           : "Have account already? Login instead"}
-      </Button>
+      </a>
     </footer>
   </section>
 </main>
