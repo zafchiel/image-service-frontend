@@ -1,7 +1,5 @@
-<div class="bg-secondary">
-  <header
-    class="flex justify-between items-center px-4 py-2 max-w-[1200px] mx-auto"
-  >
+<div class="bg-primary/10 backdrop-blur-sm">
+  <header class="flex justify-between items-center py-2 max-w-[1200px] mx-auto">
     <div>
       <img src="/favicon.png" alt="logo" class="w-10 h-10" />
     </div>
